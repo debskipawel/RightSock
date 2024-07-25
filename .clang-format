@@ -1,0 +1,65 @@
+---
+# We'll use defaults from the LLVM style, but with 4 columns indentation.
+BasedOnStyle: LLVM
+IndentWidth: 4
+---
+Language: Cpp
+
+# Force pointers to the type for C++
+DerivePointerAlignment: false
+PointerAlignment: Left
+ColumnLimit: 0
+
+# Force all one-liners off
+AllowShortIfStatementsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+CompactNamespaces: false
+
+# Align
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Right 
+
+# Braces
+InsertBraces: true
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  IndentBraces: false
+
+
+# Indent
+NamespaceIndentation: Inner
+AccessModifierOffset: -4
+IndentAccessModifiers: false
+IndentWrappedFunctionNames: true
+IndentCaseBlocks: true
+IndentCaseLabels: true
+
+# Line breaks
+BreakBeforeBraces: Allman
+BreakBeforeTernaryOperators: true
+
+# Spaces
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpaceBeforeParens: ControlStatements
+SpaceBeforeCaseColon: false
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: true
+
+# Styling
+RemoveSemicolon: true
+...
