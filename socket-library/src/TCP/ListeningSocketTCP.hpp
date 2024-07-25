@@ -11,11 +11,10 @@ namespace Sock
 class ListeningSocketTCP : public Socket
 {
 public:
-    ListeningSocketTCP(port_t port);
     ListeningSocketTCP(const std::string& address, port_t port);
     virtual ~ListeningSocketTCP() noexcept = default;
 
-    virtual auto WaitForConnection() -> std::shared_ptr<ServerSocketTCP>;
+    virtual auto WaitForConnection() -> std::unique_ptr<ServerSocketTCP>;
 
     virtual auto IsValid() const noexcept -> bool override;
 

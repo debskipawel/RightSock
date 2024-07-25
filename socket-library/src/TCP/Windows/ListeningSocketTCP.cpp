@@ -10,11 +10,6 @@
 namespace Sock
 {
 
-ListeningSocketTCP::ListeningSocketTCP(port_t port)
-    : ListeningSocketTCP("127.0.0.1", port)
-{
-}
-
 ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
     : m_Listening(false)
 {
@@ -66,7 +61,7 @@ ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
     m_Port = port;
 }
 
-auto ListeningSocketTCP::WaitForConnection() -> std::shared_ptr<ServerSocketTCP>
+auto ListeningSocketTCP::WaitForConnection() -> std::unique_ptr<ServerSocketTCP>
 {
     if (!IsValid())
     {
@@ -88,7 +83,7 @@ auto ListeningSocketTCP::WaitForConnection() -> std::shared_ptr<ServerSocketTCP>
     auto address = std::string(ip);
     auto port = ntohs(clientInfo.sin_port);
 
-    return std::make_shared<ServerSocketTCP>(static_cast<int>(clientSocket), address, port);
+    return std::make_unique<ServerSocketTCP>(static_cast<int>(clientSocket), address, port);
 }
 
 auto ListeningSocketTCP::IsValid() const noexcept -> bool

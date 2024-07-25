@@ -6,7 +6,6 @@ target_include_directories(
   socket-library PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src)
 
 set(SOCKET_LIBRARY_INCLUDE
-    "src/SocketContext.hpp"
     "src/Core/IReceivable.hpp"
     "src/Core/ISendable.hpp"
     "src/Core/Socket.hpp"
@@ -17,7 +16,7 @@ set(SOCKET_LIBRARY_INCLUDE
     "src/TCP/ServerSocketTCP.hpp"
     "src/TCP/ListeningSocketTCP.hpp")
 
-set(SOCKET_LIBRARY_COMPILE "src/SocketContext.cpp")
+set(SOCKET_LIBRARY_COMPILE)
 
 set(SOCKET_LIBRARY_WINDOWS_INCLUDE)
 
