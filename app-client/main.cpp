@@ -8,11 +8,17 @@ int main()
     std::string address = "127.0.0.1";
     Sock::port_t port = 8888;
 
-    auto clientSocket = std::make_unique<Sock::ClientSocketTCP>(address, port);
+    Sock::Socket::InitializeSystem();
 
-    clientSocket->Send({"Client says hello :3", address, port});
+    {
+        auto clientSocket = std::make_unique<Sock::ClientSocketTCP>(address, port);
 
-    auto reply = clientSocket->Receive();
+        clientSocket->Send({"Client says hello :3", address, port});
 
-    std::cout << reply.m_Message << " : [Message from " << reply.m_Address << ":" << std::to_string(reply.m_Port) << "]" << std::endl;
+        auto reply = clientSocket->Receive();
+
+        std::cout << reply.m_Message << " : [Message from " << reply.m_Address << ":" << std::to_string(reply.m_Port) << "]" << std::endl;
+    }
+
+    Sock::Socket::ShutdownSystem();
 }
