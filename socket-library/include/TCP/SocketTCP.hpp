@@ -7,12 +7,12 @@
 namespace Sock
 {
 
-class ActiveSocketTCP : public Socket, public IReceivable, public ISendable
+class SocketTCP : public Socket, public IReceivable, public ISendable
 {
 public:
-    ActiveSocketTCP();
-    ActiveSocketTCP(int socket, const std::string& address, port_t port);
-    virtual ~ActiveSocketTCP() noexcept = default;
+    SocketTCP();
+    SocketTCP(int socket, const std::string& address, port_t port);
+    virtual ~SocketTCP() noexcept = default;
 
     virtual auto Receive() const -> SocketPayload override;
     virtual auto Send(const SocketPayload& payload) const -> void override;

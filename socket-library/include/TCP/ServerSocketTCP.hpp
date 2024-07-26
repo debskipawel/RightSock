@@ -1,11 +1,11 @@
 #pragma once
 
-#include <TCP/ActiveSocketTCP.hpp>
+#include <TCP/SocketTCP.hpp>
 
 namespace Sock
 {
 
-class ServerSocketTCP : public ActiveSocketTCP
+class ServerSocketTCP : public SocketTCP
 {
 public:
     ServerSocketTCP(int socket, const std::string& address, port_t port);

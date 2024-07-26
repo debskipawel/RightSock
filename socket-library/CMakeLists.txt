@@ -11,26 +11,27 @@ set(SOCKET_LIBRARY_INCLUDE
     "include/Core/Socket.hpp"
     "include/Core/SocketPayload.hpp"
     "include/Core/Types.hpp"
-    "include/TCP/ActiveSocketTCP.hpp"
+    "include/TCP/SocketTCP.hpp"
     "include/TCP/ClientSocketTCP.hpp"
     "include/TCP/ServerSocketTCP.hpp"
-    "include/TCP/ListeningSocketTCP.hpp")
+    "include/TCP/ListeningSocketTCP.hpp"
+    "include/UDP/SocketUDP.hpp")
 
 set(SOCKET_LIBRARY_COMPILE)
 
 set(SOCKET_LIBRARY_WINDOWS_INCLUDE)
 
 set(SOCKET_LIBRARY_WINDOWS_COMPILE
-    "src/Core/Windows/Socket.cpp" "src/TCP/Windows/ActiveSocketTCP.cpp"
+    "src/Core/Windows/Socket.cpp" "src/TCP/Windows/SocketTCP.cpp"
     "src/TCP/Windows/ClientSocketTCP.cpp" "src/TCP/Windows/ServerSocketTCP.cpp"
-    "src/TCP/Windows/ListeningSocketTCP.cpp")
+    "src/TCP/Windows/ListeningSocketTCP.cpp" "src/UDP/Windows/SocketUDP.cpp")
 
 set(SOCKET_LIBRARY_OTHER_INCLUDE)
 
 set(SOCKET_LIBRARY_OTHER_COMPILE
-    "src/Core/Other/Socket.cpp" "src/TCP/Other/ActiveSocketTCP.cpp"
+    "src/Core/Other/Socket.cpp" "src/TCP/Other/SocketTCP.cpp"
     "src/TCP/Other/ClientSocketTCP.cpp" "src/TCP/Other/ServerSocketTCP.cpp"
-    "src/TCP/Other/ListeningSocketTCP.cpp")
+    "src/TCP/Other/ListeningSocketTCP.cpp" "src/UDP/Other/SocketUDP.cpp")
 
 target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_INCLUDE}
                                       ${SOCKET_LIBRARY_COMPILE})

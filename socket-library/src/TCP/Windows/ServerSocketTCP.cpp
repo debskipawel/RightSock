@@ -4,7 +4,7 @@ namespace Sock
 {
 
 ServerSocketTCP::ServerSocketTCP(int socket, const std::string& address, port_t port)
-    : ActiveSocketTCP(socket, address, port)
+    : SocketTCP(socket, address, port)
 {
 }
 

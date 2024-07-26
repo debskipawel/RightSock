@@ -1,25 +1,27 @@
-#include <TCP/ActiveSocketTCP.hpp>
+#include <TCP/SocketTCP.hpp>
 
 #include <array>
 
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-#pragma comment(lib, "Ws2_32.lib")
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 namespace Sock
 {
-ActiveSocketTCP::ActiveSocketTCP()
+
+SocketTCP::SocketTCP()
     : Socket()
 {
 }
 
-ActiveSocketTCP::ActiveSocketTCP(int socket, const std::string& address, port_t port)
+SocketTCP::SocketTCP(int socket, const std::string& address, port_t port)
     : Socket(socket, address, port)
 {
 }
 
-auto ActiveSocketTCP::Receive() const -> SocketPayload
+auto SocketTCP::Receive() const -> SocketPayload
 {
     std::array<char, 512> recvBuffer;
 
@@ -35,7 +37,7 @@ auto ActiveSocketTCP::Receive() const -> SocketPayload
     return SocketPayload(message, m_Address, m_Port);
 }
 
-auto ActiveSocketTCP::Send(const SocketPayload& payload) const -> void
+auto SocketTCP::Send(const SocketPayload& payload) const -> void
 {
     if (payload.m_Address != m_Address || payload.m_Port != m_Port)
     {
