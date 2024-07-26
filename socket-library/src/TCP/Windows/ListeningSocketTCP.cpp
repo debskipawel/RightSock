@@ -17,12 +17,13 @@ ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
+    hints.ai_flags = AI_PASSIVE;
 
     addrinfo* result = {};
 
-    auto portStr = std::to_string(m_Port);
+    auto portStr = std::to_string(port);
 
-    auto iResult = getaddrinfo(m_Address.c_str(), portStr.c_str(), &hints, &result);
+    auto iResult = getaddrinfo(address.c_str(), portStr.c_str(), &hints, &result);
 
     if (iResult != 0)
     {
@@ -38,10 +39,11 @@ ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
 
     iResult = bind(m_Socket, result->ai_addr, (int) result->ai_addrlen);
 
+    freeaddrinfo(result);
+
     if (iResult == SOCKET_ERROR)
     {
-        closesocket(m_Socket);
-        m_Socket = INVALID_SOCKET;
+        CloseConnection();
 
         return;
     }
@@ -50,8 +52,7 @@ ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
 
     if (iResult == SOCKET_ERROR)
     {
-        closesocket(m_Socket);
-        m_Socket = INVALID_SOCKET;
+        CloseConnection();
 
         return;
     }

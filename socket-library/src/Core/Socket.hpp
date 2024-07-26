@@ -20,6 +20,11 @@ public:
     static auto InitializeSystem() -> bool;
     static auto ShutdownSystem() -> void;
 
+    inline virtual auto Id() const noexcept -> int
+    {
+        return m_Socket;
+    }
+
     virtual auto IsValid() const noexcept -> bool;
 
     virtual auto CloseConnection() -> void final;

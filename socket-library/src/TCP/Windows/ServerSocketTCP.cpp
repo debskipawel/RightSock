@@ -8,9 +8,4 @@ ServerSocketTCP::ServerSocketTCP(int socket, const std::string& address, port_t 
 {
 }
 
-auto ServerSocketTCP::IsValid() const noexcept -> bool
-{
-    return false;
-}
-
 } // namespace Sock

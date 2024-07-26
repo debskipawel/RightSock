@@ -44,6 +44,9 @@ auto Socket::IsValid() const noexcept -> bool
 auto Socket::CloseConnection() -> void
 {
     closesocket(m_Socket);
+    m_Socket = INVALID_SOCKET;
+    m_Address = "";
+    m_Port = 0;
 }
 
 } // namespace Sock
