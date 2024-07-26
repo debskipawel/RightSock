@@ -25,9 +25,11 @@ set(SOCKET_LIBRARY_WINDOWS_COMPILE
     "src/TCP/Windows/ClientSocketTCP.cpp" "src/TCP/Windows/ServerSocketTCP.cpp"
     "src/TCP/Windows/ListeningSocketTCP.cpp")
 
-set(SOCKET_LIBRARY_LINUX_INCLUDE)
+set(SOCKET_LIBRARY_OTHER_INCLUDE)
 
-set(SOCKET_LIBRARY_LINUX_COMPILE)
+set(SOCKET_LIBRARY_OTHER_COMPILE
+    "src/Core/Other/Socket.cpp"
+)
 
 target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_INCLUDE}
                                       ${SOCKET_LIBRARY_COMPILE})
@@ -37,9 +39,9 @@ if(WIN32)
   target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_WINDOWS_INCLUDE}
                                         ${SOCKET_LIBRARY_WINDOWS_COMPILE})
 
-elseif(LINUX)
+else()
 
-  target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_LINUX_INCLUDE}
-                                        ${SOCKET_LIBRARY_LINUX_COMPILE})
+  target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_OTHER_INCLUDE}
+                                        ${SOCKET_LIBRARY_OTHER_COMPILE})
 
 endif()
