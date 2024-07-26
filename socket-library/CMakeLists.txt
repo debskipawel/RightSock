@@ -3,18 +3,18 @@ project(socket-library)
 add_library(socket-library STATIC)
 
 target_include_directories(
-  socket-library PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src)
+  socket-library PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 
 set(SOCKET_LIBRARY_INCLUDE
-    "src/Core/IReceivable.hpp"
-    "src/Core/ISendable.hpp"
-    "src/Core/Socket.hpp"
-    "src/Core/SocketPayload.hpp"
-    "src/Core/Types.hpp"
-    "src/TCP/ActiveSocketTCP.hpp"
-    "src/TCP/ClientSocketTCP.hpp"
-    "src/TCP/ServerSocketTCP.hpp"
-    "src/TCP/ListeningSocketTCP.hpp")
+    "include/Core/IReceivable.hpp"
+    "include/Core/ISendable.hpp"
+    "include/Core/Socket.hpp"
+    "include/Core/SocketPayload.hpp"
+    "include/Core/Types.hpp"
+    "include/TCP/ActiveSocketTCP.hpp"
+    "include/TCP/ClientSocketTCP.hpp"
+    "include/TCP/ServerSocketTCP.hpp"
+    "include/TCP/ListeningSocketTCP.hpp")
 
 set(SOCKET_LIBRARY_COMPILE)
 
@@ -30,8 +30,7 @@ set(SOCKET_LIBRARY_OTHER_INCLUDE)
 set(SOCKET_LIBRARY_OTHER_COMPILE
     "src/Core/Other/Socket.cpp" "src/TCP/Other/ActiveSocketTCP.cpp"
     "src/TCP/Other/ClientSocketTCP.cpp" "src/TCP/Other/ServerSocketTCP.cpp"
-    "src/TCP/Other/ListeningSocketTCP.cpp"
-)
+    "src/TCP/Other/ListeningSocketTCP.cpp")
 
 target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_INCLUDE}
                                       ${SOCKET_LIBRARY_COMPILE})
