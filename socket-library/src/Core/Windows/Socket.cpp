@@ -1,16 +1,15 @@
 #include <Core/Socket.hpp>
 
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#pragma comment(lib, "Ws2_32.lib")
 
 namespace Sock
 {
 
 Socket::Socket()
-    : Socket(-1, "", 0)
+    : Socket(INVALID_SOCKET, "", 0)
 {
 }
 
@@ -26,22 +25,26 @@ Socket::~Socket() noexcept
 
 auto Socket::InitializeSystem() -> bool
 {
-    return true;
+    WSADATA wsaData;
+    int initializeResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+    return (initializeResult == 0);
 }
 
 auto Socket::ShutdownSystem() -> void
 {
+    WSACleanup();
 }
 
 auto Socket::IsValid() const noexcept -> bool
 {
-    return (m_Socket >= 0);
+    return (m_Socket != INVALID_SOCKET);
 }
 
 auto Socket::CloseConnection() -> void
 {
-    close(m_Socket);
-    m_Socket = -1;
+    closesocket(m_Socket);
+    m_Socket = INVALID_SOCKET;
     m_Address = "";
     m_Port = 0;
 }

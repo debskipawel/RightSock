@@ -28,7 +28,9 @@ set(SOCKET_LIBRARY_WINDOWS_COMPILE
 set(SOCKET_LIBRARY_OTHER_INCLUDE)
 
 set(SOCKET_LIBRARY_OTHER_COMPILE
-    "src/Core/Other/Socket.cpp"
+    "src/Core/Other/Socket.cpp" "src/TCP/Other/ActiveSocketTCP.cpp"
+    "src/TCP/Other/ClientSocketTCP.cpp" "src/TCP/Other/ServerSocketTCP.cpp"
+    "src/TCP/Other/ListeningSocketTCP.cpp"
 )
 
 target_sources(socket-library PRIVATE ${SOCKET_LIBRARY_INCLUDE}
