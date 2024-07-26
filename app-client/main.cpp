@@ -1,7 +1,7 @@
 #include <TCP/ClientSocketTCP.hpp>
 
-#include <format>
 #include <iostream>
+#include <memory>
 
 int main()
 {
@@ -14,5 +14,5 @@ int main()
 
     auto reply = clientSocket->Receive();
 
-    std::cout << std::format("{} : [Message from {}:{}]", reply.m_Message, reply.m_Address, reply.m_Port) << std::endl;
+    std::cout << reply.m_Message << " : [Message from " << reply.m_Address << ":" << std::to_string(reply.m_Port) << "]" << std::endl;
 }
