@@ -33,7 +33,7 @@ protected:
     std::string m_Address;
     port_t m_Port;
 
-    int m_Socket;
+    unsigned long m_Socket;
 };
 
 } // namespace Sock

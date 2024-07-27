@@ -79,12 +79,12 @@ auto ListeningSocketTCP::WaitForConnection() -> std::unique_ptr<ServerSocketTCP>
         return {};
     };
 
-    const char* ip = inet_ntoa(clientInfo.sin_addr);
+    std::array<char, 50> address;
 
-    auto address = std::string(ip);
+    auto ip = inet_ntop(clientInfo.sin_family, &clientInfo.sin_addr, address.data(), address.size());
     auto port = ntohs(clientInfo.sin_port);
 
-    return std::make_unique<ServerSocketTCP>(static_cast<int>(clientSocket), address, port);
+    return std::make_unique<ServerSocketTCP>(static_cast<int>(clientSocket), std::string(ip), port);
 }
 
 auto ListeningSocketTCP::IsValid() const noexcept -> bool

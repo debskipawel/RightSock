@@ -67,7 +67,9 @@ auto SocketUDP::Receive() const -> SocketPayload
 
     auto message = std::string(recvBuffer.data(), recvBuffer.data() + receiveResult);
 
-    auto ip = inet_ntoa(sender.sin_addr);
+    std::array<char, 50> address;
+
+    auto ip = inet_ntop(sender.sin_family, &sender.sin_addr, address.data(), address.size());
     auto port = ntohs(sender.sin_port);
 
     return SocketPayload(message, std::string(ip), port);
