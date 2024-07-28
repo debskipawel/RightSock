@@ -75,7 +75,7 @@ auto SocketUDP::Receive() const -> SocketPayload
     return SocketPayload(message, std::string(ip), port);
 }
 
-auto SocketUDP::Send(const SocketPayload& payload) const -> void
+auto SocketUDP::Send(const SocketPayload& payload) const -> SendStatus
 {
     sockaddr_in dest = {};
     dest.sin_family = AF_INET;
@@ -83,6 +83,13 @@ auto SocketUDP::Send(const SocketPayload& payload) const -> void
     inet_pton(AF_INET, payload.m_Address.c_str(), &dest.sin_addr.s_addr);
 
     int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), sizeof(dest));
+
+    if (sendResult == 0)
+    {
+        return SendStatus::CONNECTION_CLOSED;
+    }
+
+    return SendStatus::SENT;
 }
 
 } // namespace Sock

@@ -62,7 +62,7 @@ ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
     m_Port = port;
 }
 
-auto ListeningSocketTCP::WaitForConnection() -> std::unique_ptr<ServerSocketTCP>
+auto ListeningSocketTCP::WaitForConnection() -> std::shared_ptr<ServerSocketTCP>
 {
     if (!IsValid())
     {
@@ -84,7 +84,7 @@ auto ListeningSocketTCP::WaitForConnection() -> std::unique_ptr<ServerSocketTCP>
     auto ip = inet_ntop(clientInfo.sin_family, &clientInfo.sin_addr, address.data(), address.size());
     auto port = ntohs(clientInfo.sin_port);
 
-    return std::make_unique<ServerSocketTCP>(static_cast<int>(clientSocket), std::string(ip), port);
+    return std::make_shared<ServerSocketTCP>(static_cast<int>(clientSocket), std::string(ip), port);
 }
 
 auto ListeningSocketTCP::IsValid() const noexcept -> bool

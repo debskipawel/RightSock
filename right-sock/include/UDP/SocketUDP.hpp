@@ -14,7 +14,7 @@ public:
     virtual ~SocketUDP() = default;
 
     virtual auto Receive() const -> SocketPayload override;
-    virtual auto Send(const SocketPayload& payload) const -> void override;
+    virtual auto Send(const SocketPayload& payload) const -> SendStatus override;
 };
 
 } // namespace Sock

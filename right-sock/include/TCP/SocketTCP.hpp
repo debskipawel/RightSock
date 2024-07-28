@@ -14,8 +14,18 @@ public:
     SocketTCP(int socket, const std::string& address, port_t port);
     virtual ~SocketTCP() noexcept = default;
 
+    virtual auto Address() const noexcept -> std::string
+    {
+        return m_Address;
+    }
+
+    virtual auto Port() const noexcept -> port_t
+    {
+        return m_Port;
+    }
+
     virtual auto Receive() const -> SocketPayload override;
-    virtual auto Send(const SocketPayload& payload) const -> void override;
+    virtual auto Send(const SocketPayload& payload) const -> SendStatus override;
 };
 
 } // namespace Sock

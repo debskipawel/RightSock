@@ -37,7 +37,7 @@ auto SocketTCP::Receive() const -> SocketPayload
     return SocketPayload(message, m_Address, m_Port);
 }
 
-auto SocketTCP::Send(const SocketPayload& payload) const -> void
+auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatus
 {
     if (payload.m_Address != m_Address || payload.m_Port != m_Port)
     {
@@ -47,6 +47,13 @@ auto SocketTCP::Send(const SocketPayload& payload) const -> void
     const auto& message = payload.m_Message;
 
     auto bytesSent = send(m_Socket, message.c_str(), message.length(), 0);
+
+    if (bytesSent == 0)
+    {
+        return SendStatus::CONNECTION_CLOSED;
+    }
+
+    return SendStatus::SENT;
 }
 
 } // namespace Sock
