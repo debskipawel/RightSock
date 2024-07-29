@@ -2,19 +2,23 @@
 
 #include <TCP/SocketTCP.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class ClientSocketTCP : public SocketTCP
 {
 public:
-    ClientSocketTCP(const std::string& serverAddress, port_t serverPort);
     virtual ~ClientSocketTCP() noexcept = default;
 
     virtual auto IsValid() const noexcept -> bool override;
 
 protected:
+    ClientSocketTCP(const Address& serverAddress, Port serverPort);
+
     bool m_Connected;
+
+protected:
+    friend class Context;
 };
 
-} // namespace Sock
+} // namespace RightSock

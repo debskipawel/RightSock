@@ -1,11 +1,11 @@
 #include <TCP/ServerSocketTCP.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
-ServerSocketTCP::ServerSocketTCP(int socket, const std::string& address, port_t port)
+ServerSocketTCP::ServerSocketTCP(int socket, const Address& address, Port port)
     : SocketTCP(socket, address, port)
 {
 }
 
-} // namespace Sock
+} // namespace RightSock

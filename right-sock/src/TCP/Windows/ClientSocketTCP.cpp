@@ -7,10 +7,10 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
-namespace Sock
+namespace RightSock
 {
 
-ClientSocketTCP::ClientSocketTCP(const std::string& serverAddress, port_t serverPort)
+ClientSocketTCP::ClientSocketTCP(const Address& serverAddress, Port serverPort)
     : m_Connected(false)
 {
     addrinfo hints = {};
@@ -63,4 +63,4 @@ auto ClientSocketTCP::IsValid() const noexcept -> bool
     return Socket::IsValid() && m_Connected;
 }
 
-} // namespace Sock
+} // namespace RightSock

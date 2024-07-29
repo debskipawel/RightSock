@@ -8,12 +8,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace Sock
+namespace RightSock
 {
 
-SocketUDP::SocketUDP(const std::string& address, port_t port)
+SocketUDP::SocketUDP(const Address& address, Port port)
 {
-    m_Socket = socket(AF_INET, SOCK_STREAM, 0);
+    m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (m_Socket < 0)
     {
@@ -72,4 +72,4 @@ auto SocketUDP::Send(const SocketPayload& payload) const -> void
     int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), sizeof(dest));
 }
 
-} // namespace Sock
+} // namespace RightSock

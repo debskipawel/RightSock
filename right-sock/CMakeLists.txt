@@ -6,6 +6,7 @@ target_include_directories(
   right-sock PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 
 set(RIGHT_SOCK_INCLUDE
+    "include/RightSock.hpp"
     "include/Core/IReceivable.hpp"
     "include/Core/ISendable.hpp"
     "include/Core/Socket.hpp"
@@ -17,7 +18,7 @@ set(RIGHT_SOCK_INCLUDE
     "include/TCP/ListeningSocketTCP.hpp"
     "include/UDP/SocketUDP.hpp")
 
-set(RIGHT_SOCK_COMPILE)
+set(RIGHT_SOCK_COMPILE "src/RightSock.cpp")
 
 set(RIGHT_SOCK_WINDOWS_INCLUDE)
 
@@ -33,8 +34,7 @@ set(RIGHT_SOCK_OTHER_COMPILE
     "src/TCP/Other/ClientSocketTCP.cpp" "src/TCP/Other/ServerSocketTCP.cpp"
     "src/TCP/Other/ListeningSocketTCP.cpp" "src/UDP/Other/SocketUDP.cpp")
 
-target_sources(right-sock PRIVATE ${RIGHT_SOCK_INCLUDE}
-                                  ${RIGHT_SOCK_COMPILE})
+target_sources(right-sock PRIVATE ${RIGHT_SOCK_INCLUDE} ${RIGHT_SOCK_COMPILE})
 
 if(WIN32)
 

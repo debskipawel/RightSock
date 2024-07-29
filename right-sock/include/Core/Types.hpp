@@ -1,8 +1,11 @@
 #pragma once
 
-namespace Sock
+#include <string>
+
+namespace RightSock
 {
 
-typedef unsigned short port_t;
+typedef std::string Address;
+typedef unsigned short Port;
 
-}
+} // namespace RightSock

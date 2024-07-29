@@ -5,13 +5,12 @@
 #include <Core/Socket.hpp>
 #include <TCP/ServerSocketTCP.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class ListeningSocketTCP : public Socket
 {
 public:
-    ListeningSocketTCP(const std::string& address, port_t port);
     virtual ~ListeningSocketTCP() noexcept = default;
 
     virtual auto WaitForConnection() -> std::shared_ptr<ServerSocketTCP>;
@@ -19,7 +18,12 @@ public:
     virtual auto IsValid() const noexcept -> bool override;
 
 protected:
+    ListeningSocketTCP(const Address& address, Port port);
+
     bool m_Listening;
+
+protected:
+    friend class Context;
 };
 
-} // namespace Sock
+} // namespace RightSock

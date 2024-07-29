@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace Sock
+namespace RightSock
 {
 
 Socket::Socket()
@@ -14,7 +14,7 @@ Socket::Socket()
 {
 }
 
-Socket::Socket(int socket, const std::string& address, port_t port)
+Socket::Socket(int socket, const Address& address, Port port)
     : m_Socket(socket), m_Address(address), m_Port(port)
 {
 }
@@ -46,4 +46,4 @@ auto Socket::CloseConnection() -> void
     m_Port = 0;
 }
 
-} // namespace Sock
+} // namespace RightSock

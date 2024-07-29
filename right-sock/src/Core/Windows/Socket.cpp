@@ -5,15 +5,17 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
-namespace Sock
+namespace RightSock
 {
+
+static bool s_Initialized = false;
 
 Socket::Socket()
     : Socket(INVALID_SOCKET, "", 0)
 {
 }
 
-Socket::Socket(int socket, const std::string& address, port_t port)
+Socket::Socket(int socket, const Address& address, Port port)
     : m_Socket(socket), m_Address(address), m_Port(port)
 {
 }
@@ -25,14 +27,28 @@ Socket::~Socket() noexcept
 
 auto Socket::InitializeSystem() -> bool
 {
+    if (s_Initialized)
+    {
+        return true;
+    }
+
     WSADATA wsaData;
     int initializeResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-    return (initializeResult == 0);
+    s_Initialized = (initializeResult == 0);
+
+    return s_Initialized;
 }
 
 auto Socket::ShutdownSystem() -> void
 {
+    if (!s_Initialized)
+    {
+        return;
+    }
+
+    s_Initialized = false;
+
     WSACleanup();
 }
 
@@ -49,4 +65,4 @@ auto Socket::CloseConnection() -> void
     m_Port = 0;
 }
 
-} // namespace Sock
+} // namespace RightSock

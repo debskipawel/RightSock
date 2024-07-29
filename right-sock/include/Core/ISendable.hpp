@@ -2,20 +2,21 @@
 
 #include <Core/SocketPayload.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
-enum class SendStatus : int
+enum class SendStatusCode : int
 {
     SENT = 0,
     CONNECTION_CLOSED = 1,
     SEND_ERROR = 2,
+    VALIDATION_ERROR = 3,
 };
 
 class ISendable
 {
 public:
-    virtual auto Send(const SocketPayload& payload) const -> SendStatus = 0;
+    virtual auto Send(const SocketPayload& payload) const -> SendStatusCode = 0;
 };
 
-} // namespace Sock
+} // namespace RightSock
