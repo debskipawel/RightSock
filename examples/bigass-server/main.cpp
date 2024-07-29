@@ -24,6 +24,12 @@ std::mutex g_ClientThreadsMutex;
 
 std::thread g_ListeningThread;
 std::thread g_ServerUDPThread;
+std::thread g_CleanerThread;
+
+std::queue<int> g_ReadersToErase;
+std::queue<int> g_WritersToErase;
+std::mutex g_EraseQueueMutex;
+std::condition_variable g_EraseCV;
 
 bool g_ShouldContinue = true;
 std::mutex g_ContinueFlagMutex;
@@ -39,6 +45,11 @@ void serverReaderWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
 
         if (message.m_Message.empty())
         {
+            std::lock_guard<std::mutex> lck(g_EraseQueueMutex);
+            g_ReadersToErase.push(serverSocketTCP->Id());
+
+            g_EraseCV.notify_all();
+
             break;
         }
 
@@ -48,16 +59,7 @@ void serverReaderWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
         }
 
         std::cout << "[" << message.m_Address << ":" << std::to_string(message.m_Port) << "] " << message.m_Message << std::endl;
-
-        if (message.m_Message == "QUIT")
-        {
-            auto lck = std::lock_guard<std::mutex>(g_ContinueFlagMutex);
-            g_ShouldContinue = false;
-        }
     }
-
-    auto lck = std::lock_guard<std::mutex>(g_ClientThreadsMutex);
-    g_ClientReaderThreads.erase(serverSocketTCP->Id());
 }
 
 void serverWriterWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
@@ -75,16 +77,18 @@ void serverWriterWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
 
         auto sendResult = serverSocketTCP->Send({message, serverSocketTCP->Address(), serverSocketTCP->Port()});
 
-        g_SentMessagesBarrier->arrive_and_wait();
+        g_SentMessagesBarrier->arrive();
 
         if (sendResult == Sock::SendStatus::CONNECTION_CLOSED)
         {
+            std::lock_guard<std::mutex> lck(g_EraseQueueMutex);
+            g_WritersToErase.push(serverSocketTCP->Id());
+
+            g_EraseCV.notify_all();
+
             break;
         }
     }
-
-    auto lck = std::lock_guard<std::mutex>(g_ClientThreadsMutex);
-    g_ClientWriterThreads.erase(serverSocketTCP->Id());
 }
 
 void listeningWork()
@@ -125,11 +129,32 @@ void serverUDPWork()
         std::cout << "[" << message.m_Address << ":" << std::to_string(message.m_Port) << "] " << message.m_Message << std::endl;
 
         g_ServerUDPSocket->Send({"Copy.", message.m_Address, message.m_Port});
+    }
+}
 
-        if (message.m_Message == "QUIT")
+void cleanerWork()
+{
+    while (g_ShouldContinue)
+    {
+        std::unique_lock<std::mutex> lck(g_EraseQueueMutex);
+        g_EraseCV.wait(lck);
+
+        std::lock_guard<std::mutex> clientsLck(g_ClientThreadsMutex);
+
+        while (!g_ReadersToErase.empty())
         {
-            auto lck = std::lock_guard<std::mutex>(g_ContinueFlagMutex);
-            g_ShouldContinue = false;
+            g_ClientReaderThreads[g_ReadersToErase.front()].join();
+            g_ClientReaderThreads.erase(g_ReadersToErase.front());
+
+            g_ReadersToErase.pop();
+        }
+
+        while (!g_WritersToErase.empty())
+        {
+            g_ClientReaderThreads[g_ReadersToErase.front()].join();
+            g_ClientReaderThreads.erase(g_ReadersToErase.front());
+
+            g_ReadersToErase.pop();
         }
     }
 }
@@ -143,6 +168,8 @@ int main()
 
     g_ListeningSocket = std::make_unique<Sock::ListeningSocketTCP>(address, port);
     g_ServerUDPSocket = std::make_unique<Sock::SocketUDP>(address, port);
+
+    g_CleanerThread = std::thread(cleanerWork);
 
     g_ListeningThread = std::thread(listeningWork);
     g_ServerUDPThread = std::thread(serverUDPWork);
@@ -183,8 +210,22 @@ int main()
     g_ListeningSocket->CloseConnection();
     g_ServerUDPSocket->CloseConnection();
 
+    g_EraseCV.notify_all();
+    g_SentMessageCV.notify_all();
+
+    g_CleanerThread.join();
     g_ListeningThread.join();
     g_ServerUDPThread.join();
+
+    for (auto& [id, thread] : g_ClientReaderThreads)
+    {
+        thread.join();
+    }
+
+    for (auto& [id, thread] : g_ClientWriterThreads)
+    {
+        thread.join();
+    }
 
     Sock::Socket::ShutdownSystem();
 }
