@@ -2,9 +2,9 @@
 <img src="resources/right-sock-logo.png" alt="Right Sock logo" width="300"/>
 </p>
 
-# Right Sock
+# RightSock
 
-Right Sock is a simple, lightweight, object-oriented, C++ wrapper library for networking using sockets.
+RightSock is a simple, lightweight, object-oriented, C++ wrapper library for networking using sockets.
 
 It supports multiple platforms, such as Windows, Linux, or Android.
 
