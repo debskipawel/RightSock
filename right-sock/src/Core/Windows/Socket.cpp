@@ -8,6 +8,8 @@
 namespace Sock
 {
 
+static bool s_Initialized = false;
+
 Socket::Socket()
     : Socket(INVALID_SOCKET, "", 0)
 {
@@ -25,14 +27,28 @@ Socket::~Socket() noexcept
 
 auto Socket::InitializeSystem() -> bool
 {
+    if (s_Initialized)
+    {
+        return true;
+    }
+
     WSADATA wsaData;
     int initializeResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-    return (initializeResult == 0);
+    s_Initialized = (initializeResult == 0);
+
+    return s_Initialized;
 }
 
 auto Socket::ShutdownSystem() -> void
 {
+    if (!s_Initialized)
+    {
+        return;
+    }
+
+    s_Initialized = false;
+
     WSACleanup();
 }
 

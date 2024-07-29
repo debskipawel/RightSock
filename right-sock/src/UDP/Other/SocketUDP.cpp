@@ -13,7 +13,7 @@ namespace Sock
 
 SocketUDP::SocketUDP(const std::string& address, port_t port)
 {
-    m_Socket = socket(AF_INET, SOCK_STREAM, 0);
+    m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (m_Socket < 0)
     {

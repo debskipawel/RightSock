@@ -84,7 +84,7 @@ auto ListeningSocketTCP::WaitForConnection() -> std::shared_ptr<ServerSocketTCP>
     auto ip = inet_ntop(clientInfo.sin_family, &clientInfo.sin_addr, address.data(), address.size());
     auto port = ntohs(clientInfo.sin_port);
 
-    return std::make_shared<ServerSocketTCP>(static_cast<int>(clientSocket), std::string(ip), port);
+    return std::shared_ptr<ServerSocketTCP>(new ServerSocketTCP(static_cast<int>(clientSocket), std::string(ip), port));
 }
 
 auto ListeningSocketTCP::IsValid() const noexcept -> bool

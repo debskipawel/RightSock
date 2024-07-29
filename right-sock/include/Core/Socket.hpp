@@ -10,12 +10,7 @@ namespace Sock
 class Socket
 {
 public:
-    Socket();
-    Socket(int socket, const std::string& address, port_t port);
     virtual ~Socket() noexcept;
-
-    Socket(const Socket& other) = delete;
-    auto operator=(const Socket& other) -> Socket = delete;
 
     static auto InitializeSystem() -> bool;
     static auto ShutdownSystem() -> void;
@@ -34,6 +29,13 @@ protected:
     port_t m_Port;
 
     unsigned long m_Socket;
+
+protected:
+    Socket();
+    Socket(int socket, const std::string& address, port_t port);
+
+    Socket(const Socket& other) = delete;
+    auto operator=(const Socket& other) -> Socket = delete;
 };
 
 } // namespace Sock

@@ -1,5 +1,4 @@
-#include <TCP/ListeningSocketTCP.hpp>
-#include <UDP/SocketUDP.hpp>
+#include <RightSockContext.hpp>
 
 #include <barrier>
 #include <condition_variable>
@@ -34,8 +33,8 @@ std::condition_variable g_EraseCV;
 bool g_ShouldContinue = true;
 std::mutex g_ContinueFlagMutex;
 
-std::unique_ptr<Sock::ListeningSocketTCP> g_ListeningSocket;
-std::unique_ptr<Sock::SocketUDP> g_ServerUDPSocket;
+std::shared_ptr<Sock::ListeningSocketTCP> g_ListeningSocket;
+std::shared_ptr<Sock::SocketUDP> g_ServerUDPSocket;
 
 void serverReaderWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
 {
@@ -164,10 +163,10 @@ int main()
     std::string address = "127.0.0.1";
     Sock::port_t port = 8888;
 
-    Sock::Socket::InitializeSystem();
+    auto& context = Sock::RightSockContext::Instance();
 
-    g_ListeningSocket = std::make_unique<Sock::ListeningSocketTCP>(address, port);
-    g_ServerUDPSocket = std::make_unique<Sock::SocketUDP>(address, port);
+    g_ListeningSocket = context.StartServerTCP(address, port);
+    g_ServerUDPSocket = context.CreateConnectionPointUDP(address, port);
 
     g_CleanerThread = std::thread(cleanerWork);
 
@@ -226,6 +225,4 @@ int main()
     {
         thread.join();
     }
-
-    Sock::Socket::ShutdownSystem();
 }

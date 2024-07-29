@@ -10,10 +10,6 @@ namespace Sock
 class SocketTCP : public Socket, public IReceivable, public ISendable
 {
 public:
-    SocketTCP();
-    SocketTCP(int socket, const std::string& address, port_t port);
-    virtual ~SocketTCP() noexcept = default;
-
     virtual auto Address() const noexcept -> std::string
     {
         return m_Address;
@@ -26,6 +22,11 @@ public:
 
     virtual auto Receive() const -> SocketPayload override;
     virtual auto Send(const SocketPayload& payload) const -> SendStatus override;
+
+protected:
+    SocketTCP();
+    SocketTCP(int socket, const std::string& address, port_t port);
+    virtual ~SocketTCP() noexcept = default;
 };
 
 } // namespace Sock

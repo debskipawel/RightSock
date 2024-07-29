@@ -8,13 +8,17 @@ namespace Sock
 class ClientSocketTCP : public SocketTCP
 {
 public:
-    ClientSocketTCP(const std::string& serverAddress, port_t serverPort);
     virtual ~ClientSocketTCP() noexcept = default;
 
     virtual auto IsValid() const noexcept -> bool override;
 
 protected:
+    ClientSocketTCP(const std::string& serverAddress, port_t serverPort);
+
     bool m_Connected;
+
+protected:
+    friend class RightSockContext;
 };
 
 } // namespace Sock
