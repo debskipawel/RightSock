@@ -1,4 +1,4 @@
-#include <RightSockContext.hpp>
+#include <RightSock.hpp>
 
 #include <iostream>
 #include <memory>
@@ -15,7 +15,23 @@ int main()
 
     clientSocket->Send({"Client says hello :3", address, serverPort});
 
-    auto reply = clientSocket->Receive();
+    auto [status, reply] = clientSocket->Receive();
 
-    std::cout << reply.m_Message << " : [Message from " << reply.m_Address << ":" << std::to_string(reply.m_Port) << "]" << std::endl;
+    switch (status)
+    {
+        case RightSock::ReceiveStatusCode::RECEIVED:
+        {
+            std::cout << reply.m_Message << " : [Message from " << reply.m_Address << ":" << std::to_string(reply.m_Port) << "]" << std::endl;
+            break;
+        }
+        case RightSock::ReceiveStatusCode::RECV_ERROR:
+        {
+            std::cout << "Recv error, aborting!" << std::endl;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }

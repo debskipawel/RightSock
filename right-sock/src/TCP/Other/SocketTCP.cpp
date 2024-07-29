@@ -27,9 +27,13 @@ auto SocketTCP::Receive() const -> SocketPayload
 
     int bytesReceived = recv(m_Socket, recvBuffer.data(), recvBuffer.size(), 0);
 
-    if (bytesReceived < 0)
+    if (bytesReceived == 0)
     {
-        return SocketPayload("", m_Address, m_Port);
+        return {ReceiveStatusCode::CONNECTION_CLOSED, SocketPayload::DEFAULT()};
+    }
+    else if (bytesReceived < 0)
+    {
+        return {ReceiveStatusCode::RECV_ERROR, SocketPayload::DEFAULT()};
     }
 
     std::string message(recvBuffer.begin(), recvBuffer.begin() + bytesReceived);
@@ -37,7 +41,7 @@ auto SocketTCP::Receive() const -> SocketPayload
     return SocketPayload(message, m_Address, m_Port);
 }
 
-auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatus
+auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatusCode
 {
     if (payload.m_Address != m_Address || payload.m_Port != m_Port)
     {
@@ -50,10 +54,10 @@ auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatus
 
     if (bytesSent == 0)
     {
-        return SendStatus::CONNECTION_CLOSED;
+        return SendStatusCode::CONNECTION_CLOSED;
     }
 
-    return SendStatus::SENT;
+    return SendStatusCode::SENT;
 }
 
 } // namespace RightSock

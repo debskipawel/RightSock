@@ -1,4 +1,4 @@
-#include <RightSockContext.hpp>
+#include <RightSock.hpp>
 
 #include <barrier>
 #include <condition_variable>
@@ -40,9 +40,9 @@ void serverReaderWorkTCP(std::shared_ptr<RightSock::ServerSocketTCP> serverSocke
 {
     while (g_ShouldContinue)
     {
-        auto message = serverSocketTCP->Receive();
+        auto [status, message] = serverSocketTCP->Receive();
 
-        if (message.m_Message.empty())
+        if (status == RightSock::ReceiveStatusCode::CONNECTION_CLOSED)
         {
             std::lock_guard<std::mutex> lck(g_EraseQueueMutex);
             g_ReadersToErase.push(serverSocketTCP->Id());
@@ -78,7 +78,7 @@ void serverWriterWorkTCP(std::shared_ptr<RightSock::ServerSocketTCP> serverSocke
 
         g_SentMessagesBarrier->arrive();
 
-        if (sendResult == RightSock::SendStatus::CONNECTION_CLOSED)
+        if (sendResult == RightSock::SendStatusCode::CONNECTION_CLOSED)
         {
             std::lock_guard<std::mutex> lck(g_EraseQueueMutex);
             g_WritersToErase.push(serverSocketTCP->Id());
@@ -113,9 +113,9 @@ void serverUDPWork()
 {
     while (g_ShouldContinue)
     {
-        auto message = g_ServerUDPSocket->Receive();
+        auto [status, message] = g_ServerUDPSocket->Receive();
 
-        if (message.m_Message.empty())
+        if (status == RightSock::ReceiveStatusCode::CONNECTION_CLOSED)
         {
             continue;
         }

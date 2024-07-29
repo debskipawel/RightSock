@@ -38,7 +38,7 @@ NamespaceIndentation: Inner
 AccessModifierOffset: -4
 IndentAccessModifiers: false
 IndentWrappedFunctionNames: true
-IndentCaseBlocks: true
+IndentCaseBlocks: false
 IndentCaseLabels: true
 
 # Line breaks

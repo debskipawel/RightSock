@@ -12,8 +12,8 @@ class SocketUDP : public Socket, public IReceivable, public ISendable
 public:
     virtual ~SocketUDP() = default;
 
-    virtual auto Receive() const -> SocketPayload override;
-    virtual auto Send(const SocketPayload& payload) const -> SendStatus override;
+    virtual auto Receive() const -> ReceiveResult override;
+    virtual auto Send(const SocketPayload& payload) const -> SendStatusCode override;
 
 protected:
     SocketUDP(const Address& address, Port port);

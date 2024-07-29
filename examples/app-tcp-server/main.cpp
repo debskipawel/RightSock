@@ -1,4 +1,4 @@
-#include <RightSockContext.hpp>
+#include <RightSock.hpp>
 
 #include <iostream>
 
@@ -12,9 +12,25 @@ int main()
     auto serverSocket = context.StartServerTCP(address, port);
 
     auto newClient = serverSocket->WaitForConnection();
-    auto message = newClient->Receive();
+    auto [status, message] = newClient->Receive();
 
-    std::cout << message.m_Message << " : [Message from " << message.m_Address << ":" << std::to_string(message.m_Port) << "]" << std::endl;
+    switch (status)
+    {
+        case RightSock::ReceiveStatusCode::RECEIVED:
+        {
+            std::cout << message.m_Message << " : [Message from " << message.m_Address << ":" << std::to_string(message.m_Port) << "]" << std::endl;
 
-    newClient->Send({"Reply sent from the server!", message.m_Address, message.m_Port});
+            newClient->Send({"Reply sent from the server!", message.m_Address, message.m_Port});
+            break;
+        }
+        case RightSock::ReceiveStatusCode::CONNECTION_CLOSED:
+        {
+            std::cout << "Connection was closed. Terminating.";
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }

@@ -15,6 +15,11 @@ struct SocketPayload
     std::string m_Message;
     Address m_Address;
     Port m_Port;
+
+    inline static SocketPayload DEFAULT()
+    {
+        return SocketPayload("", "", 0);
+    }
 };
 
 } // namespace RightSock

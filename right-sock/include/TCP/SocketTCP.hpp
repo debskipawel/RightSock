@@ -10,8 +10,8 @@ namespace RightSock
 class SocketTCP : public Socket, public IReceivable, public ISendable
 {
 public:
-    virtual auto Receive() const -> SocketPayload override;
-    virtual auto Send(const SocketPayload& payload) const -> SendStatus override;
+    virtual auto Receive() const -> ReceiveResult override;
+    virtual auto Send(const SocketPayload& payload) const -> SendStatusCode override;
 
 protected:
     SocketTCP();
