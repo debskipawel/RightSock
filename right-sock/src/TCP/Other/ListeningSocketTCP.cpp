@@ -8,10 +8,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace Sock
+namespace RightSock
 {
 
-ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
+ListeningSocketTCP::ListeningSocketTCP(const Address& address, Port port)
     : m_Listening(false)
 {
     m_Socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -76,4 +76,4 @@ auto ListeningSocketTCP::IsValid() const noexcept -> bool
     return Socket::IsValid() && m_Listening;
 }
 
-} // namespace Sock
+} // namespace RightSock

@@ -8,10 +8,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace Sock
+namespace RightSock
 {
 
-ClientSocketTCP::ClientSocketTCP(const std::string& serverAddress, port_t serverPort)
+ClientSocketTCP::ClientSocketTCP(const Address& serverAddress, Port serverPort)
     : m_Connected(false)
 {
     m_Socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -51,4 +51,4 @@ auto ClientSocketTCP::IsValid() const noexcept -> bool
     return Socket::IsValid() && m_Connected;
 }
 
-} // namespace Sock
+} // namespace RightSock

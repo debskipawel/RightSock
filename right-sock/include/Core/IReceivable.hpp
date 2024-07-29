@@ -2,7 +2,7 @@
 
 #include <Core/SocketPayload.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class IReceivable
@@ -11,4 +11,4 @@ public:
     virtual auto Receive() const -> SocketPayload = 0;
 };
 
-} // namespace Sock
+} // namespace RightSock

@@ -2,7 +2,7 @@
 
 #include <TCP/SocketTCP.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class ServerSocketTCP : public SocketTCP
@@ -11,11 +11,11 @@ public:
     virtual ~ServerSocketTCP() noexcept = default;
 
 protected:
-    ServerSocketTCP(int socket, const std::string& address, port_t port);
+    ServerSocketTCP(int socket, const Address& address, Port port);
 
 protected:
     friend class ListeningSocketTCP;
-    friend class RightSockContext;
+    friend class Context;
 };
 
-} // namespace Sock
+} // namespace RightSock

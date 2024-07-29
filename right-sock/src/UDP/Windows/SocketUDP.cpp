@@ -7,10 +7,10 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
-namespace Sock
+namespace RightSock
 {
 
-SocketUDP::SocketUDP(const std::string& address, port_t port)
+SocketUDP::SocketUDP(const Address& address, Port port)
 {
     addrinfo hints = {};
     hints.ai_family = AF_INET;
@@ -92,4 +92,4 @@ auto SocketUDP::Send(const SocketPayload& payload) const -> SendStatus
     return SendStatus::SENT;
 }
 
-} // namespace Sock
+} // namespace RightSock

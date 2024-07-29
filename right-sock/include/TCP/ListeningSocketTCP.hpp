@@ -5,7 +5,7 @@
 #include <Core/Socket.hpp>
 #include <TCP/ServerSocketTCP.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class ListeningSocketTCP : public Socket
@@ -18,12 +18,12 @@ public:
     virtual auto IsValid() const noexcept -> bool override;
 
 protected:
-    ListeningSocketTCP(const std::string& address, port_t port);
+    ListeningSocketTCP(const Address& address, Port port);
 
     bool m_Listening;
 
 protected:
-    friend class RightSockContext;
+    friend class Context;
 };
 
-} // namespace Sock
+} // namespace RightSock

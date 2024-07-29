@@ -4,17 +4,17 @@
 
 #include <Core/Types.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 struct SocketPayload
 {
-    SocketPayload(const std::string& message, const std::string& address, port_t port)
+    SocketPayload(const std::string& message, const std::string& address, Port port)
         : m_Message(message), m_Address(address), m_Port(port) { }
 
     std::string m_Message;
-    std::string m_Address;
-    port_t m_Port;
+    Address m_Address;
+    Port m_Port;
 };
 
-} // namespace Sock
+} // namespace RightSock

@@ -4,7 +4,7 @@
 
 #include <Core/Types.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class Socket
@@ -20,22 +20,32 @@ public:
         return m_Socket;
     }
 
+    virtual auto GetAddress() const noexcept -> std::string
+    {
+        return m_Address;
+    }
+
+    virtual auto GetPort() const noexcept -> Port
+    {
+        return m_Port;
+    }
+
     virtual auto IsValid() const noexcept -> bool;
 
     virtual auto CloseConnection() -> void final;
 
 protected:
-    std::string m_Address;
-    port_t m_Port;
+    Address m_Address;
+    Port m_Port;
 
-    unsigned long m_Socket;
+    int m_Socket;
 
 protected:
     Socket();
-    Socket(int socket, const std::string& address, port_t port);
+    Socket(int socket, const Address& address, Port port);
 
     Socket(const Socket& other) = delete;
     auto operator=(const Socket& other) -> Socket = delete;
 };
 
-} // namespace Sock
+} // namespace RightSock

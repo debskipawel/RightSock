@@ -5,10 +5,10 @@
 
 int main()
 {
-    std::string address = "127.0.0.1";
-    Sock::port_t port = 8888;
+    RightSock::Address address = "127.0.0.1";
+    RightSock::Port port = 8888;
 
-    auto& context = Sock::RightSockContext::Instance();
+    auto& context = RightSock::Context::Instance();
 
     auto clientSocket = context.ConnectToServerTCP(address, port);
 

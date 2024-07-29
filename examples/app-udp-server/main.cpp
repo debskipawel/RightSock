@@ -4,10 +4,10 @@
 
 int main()
 {
-    std::string address = "127.0.0.1";
-    Sock::port_t serverPort = 8888;
+    RightSock::Address address = "127.0.0.1";
+    RightSock::Port serverPort = 8888;
 
-    auto& context = Sock::RightSockContext::Instance();
+    auto& context = RightSock::Context::Instance();
 
     auto serverSocket = context.CreateConnectionPointUDP(address, serverPort);
 

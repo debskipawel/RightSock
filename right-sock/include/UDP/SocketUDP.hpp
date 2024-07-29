@@ -4,7 +4,7 @@
 #include <Core/ISendable.hpp>
 #include <Core/Socket.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 class SocketUDP : public Socket, public IReceivable, public ISendable
@@ -16,10 +16,10 @@ public:
     virtual auto Send(const SocketPayload& payload) const -> SendStatus override;
 
 protected:
-    SocketUDP(const std::string& address, port_t port);
+    SocketUDP(const Address& address, Port port);
 
 protected:
-    friend class RightSockContext;
+    friend class Context;
 };
 
-} // namespace Sock
+} // namespace RightSock

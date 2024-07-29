@@ -2,7 +2,7 @@
 
 #include <Core/SocketPayload.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
 enum class SendStatus : int
@@ -18,4 +18,4 @@ public:
     virtual auto Send(const SocketPayload& payload) const -> SendStatus = 0;
 };
 
-} // namespace Sock
+} // namespace RightSock

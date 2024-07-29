@@ -7,10 +7,10 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
-namespace Sock
+namespace RightSock
 {
 
-ListeningSocketTCP::ListeningSocketTCP(const std::string& address, port_t port)
+ListeningSocketTCP::ListeningSocketTCP(const Address& address, Port port)
     : m_Listening(false)
 {
     addrinfo hints = {};
@@ -92,4 +92,4 @@ auto ListeningSocketTCP::IsValid() const noexcept -> bool
     return Socket::IsValid() && m_Listening;
 }
 
-} // namespace Sock
+} // namespace RightSock

@@ -4,31 +4,31 @@
 #include <TCP/ListeningSocketTCP.hpp>
 #include <UDP/SocketUDP.hpp>
 
-namespace Sock
+namespace RightSock
 {
 
-class RightSockContext
+class Context
 {
 public:
-    ~RightSockContext() noexcept;
+    ~Context() noexcept;
 
-    auto StartServerTCP(const std::string& address, port_t port) -> std::shared_ptr<ListeningSocketTCP>;
-    auto ConnectToServerTCP(const std::string& address, port_t port) -> std::shared_ptr<ClientSocketTCP>;
+    auto StartServerTCP(const Address& address, Port port) -> std::shared_ptr<ListeningSocketTCP>;
+    auto ConnectToServerTCP(const Address& address, Port port) -> std::shared_ptr<ClientSocketTCP>;
 
-    auto CreateConnectionPointUDP(const std::string& address, port_t port) -> std::shared_ptr<SocketUDP>;
+    auto CreateConnectionPointUDP(const Address& address, Port port) -> std::shared_ptr<SocketUDP>;
 
-    static auto Instance() -> RightSockContext&;
-
-private:
-    RightSockContext() noexcept;
-
-    static std::unique_ptr<RightSockContext> s_Instance;
+    static auto Instance() -> Context&;
 
 private:
-    RightSockContext(const RightSockContext& other) = delete;
-    RightSockContext(RightSockContext&& other) = delete;
-    auto operator=(const RightSockContext& other) -> RightSockContext& = delete;
-    auto operator=(RightSockContext&& other) -> RightSockContext& = delete;
+    Context() noexcept;
+
+    static std::unique_ptr<Context> s_Instance;
+
+private:
+    Context(const Context& other) = delete;
+    Context(Context&& other) = delete;
+    auto operator=(const Context& other) -> Context& = delete;
+    auto operator=(Context&& other) -> Context& = delete;
 };
 
-} // namespace Sock
+} // namespace RightSock

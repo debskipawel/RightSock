@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace Sock
+namespace RightSock
 {
 
 SocketTCP::SocketTCP()
@@ -16,7 +16,7 @@ SocketTCP::SocketTCP()
 {
 }
 
-SocketTCP::SocketTCP(int socket, const std::string& address, port_t port)
+SocketTCP::SocketTCP(int socket, const Address& address, Port port)
     : Socket(socket, address, port)
 {
 }
@@ -56,4 +56,4 @@ auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatus
     return SendStatus::SENT;
 }
 
-} // namespace Sock
+} // namespace RightSock

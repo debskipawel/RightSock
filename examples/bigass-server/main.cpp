@@ -9,7 +9,7 @@
 #include <thread>
 #include <unordered_map>
 
-std::queue<Sock::SocketPayload> g_ReceivedMessageQueue;
+std::queue<RightSock::SocketPayload> g_ReceivedMessageQueue;
 std::mutex g_ReceivedMessageQueueMutex;
 
 std::queue<std::string> g_SentMessageQueue;
@@ -33,10 +33,10 @@ std::condition_variable g_EraseCV;
 bool g_ShouldContinue = true;
 std::mutex g_ContinueFlagMutex;
 
-std::shared_ptr<Sock::ListeningSocketTCP> g_ListeningSocket;
-std::shared_ptr<Sock::SocketUDP> g_ServerUDPSocket;
+std::shared_ptr<RightSock::ListeningSocketTCP> g_ListeningSocket;
+std::shared_ptr<RightSock::SocketUDP> g_ServerUDPSocket;
 
-void serverReaderWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
+void serverReaderWorkTCP(std::shared_ptr<RightSock::ServerSocketTCP> serverSocketTCP)
 {
     while (g_ShouldContinue)
     {
@@ -61,7 +61,7 @@ void serverReaderWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
     }
 }
 
-void serverWriterWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
+void serverWriterWorkTCP(std::shared_ptr<RightSock::ServerSocketTCP> serverSocketTCP)
 {
     while (g_ShouldContinue)
     {
@@ -74,11 +74,11 @@ void serverWriterWorkTCP(std::shared_ptr<Sock::ServerSocketTCP> serverSocketTCP)
             message = g_SentMessageQueue.front();
         }
 
-        auto sendResult = serverSocketTCP->Send({message, serverSocketTCP->Address(), serverSocketTCP->Port()});
+        auto sendResult = serverSocketTCP->Send({message, serverSocketTCP->GetAddress(), serverSocketTCP->GetPort()});
 
         g_SentMessagesBarrier->arrive();
 
-        if (sendResult == Sock::SendStatus::CONNECTION_CLOSED)
+        if (sendResult == RightSock::SendStatus::CONNECTION_CLOSED)
         {
             std::lock_guard<std::mutex> lck(g_EraseQueueMutex);
             g_WritersToErase.push(serverSocketTCP->Id());
@@ -160,10 +160,10 @@ void cleanerWork()
 
 int main()
 {
-    std::string address = "127.0.0.1";
-    Sock::port_t port = 8888;
+    RightSock::Address address = "127.0.0.1";
+    RightSock::Port port = 8888;
 
-    auto& context = Sock::RightSockContext::Instance();
+    auto& context = RightSock::Context::Instance();
 
     g_ListeningSocket = context.StartServerTCP(address, port);
     g_ServerUDPSocket = context.CreateConnectionPointUDP(address, port);
