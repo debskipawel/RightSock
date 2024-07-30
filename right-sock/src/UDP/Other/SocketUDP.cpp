@@ -69,7 +69,9 @@ auto SocketUDP::Send(const SocketPayload& payload) const -> SendStatusCode
     dest.sin_port = htons(payload.m_Port);
     inet_pton(AF_INET, payload.m_Address.c_str(), &dest.sin_addr);
 
-    int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), sizeof(dest));
+    socklen_t destSize = sizeof(dest);
+
+    int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), &destSize);
 
     if (sendResult == 0)
     {
