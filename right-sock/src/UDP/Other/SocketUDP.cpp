@@ -40,18 +40,18 @@ SocketUDP::SocketUDP(const Address& address, Port port)
     m_Port = port;
 }
 
-auto SocketUDP::Receive() const -> SocketPayload
+auto SocketUDP::Receive() const -> ReceiveResult
 {
     std::array<char, 512> recvBuffer;
 
     sockaddr_in sender = {};
-    int senderSize = sizeof(sender);
+    socklen_t senderSize = sizeof(sender);
 
     int receiveResult = recvfrom(m_Socket, recvBuffer.data(), recvBuffer.size(), 0, (sockaddr*) (&sender), &senderSize);
 
     if (receiveResult < 0)
     {
-        return SocketPayload("", "", 0);
+        return {ReceiveStatusCode::RECV_ERROR, SocketPayload("", "", 0)};
     }
 
     auto message = std::string(recvBuffer.data(), recvBuffer.data() + receiveResult);
@@ -59,17 +59,30 @@ auto SocketUDP::Receive() const -> SocketPayload
     auto ip = inet_ntoa(sender.sin_addr);
     auto port = ntohs(sender.sin_port);
 
-    return SocketPayload(message, std::string(ip), port);
+    return {ReceiveStatusCode::RECEIVED, SocketPayload(message, std::string(ip), port)};
 }
 
-auto SocketUDP::Send(const SocketPayload& payload) const -> void
+auto SocketUDP::Send(const SocketPayload& payload) const -> SendStatusCode
 {
     sockaddr_in dest = {};
     dest.sin_family = AF_INET;
     dest.sin_port = htons(payload.m_Port);
     inet_pton(AF_INET, payload.m_Address.c_str(), &dest.sin_addr);
 
-    int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), sizeof(dest));
+    socklen_t destSize = sizeof(dest);
+
+    int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), destSize);
+
+    if (sendResult == 0)
+    {
+        return SendStatusCode::CONNECTION_CLOSED;
+    }
+    else if (sendResult < 0)
+    {
+        return SendStatusCode::SEND_ERROR;
+    }
+
+    return SendStatusCode::SENT;
 }
 
 } // namespace RightSock

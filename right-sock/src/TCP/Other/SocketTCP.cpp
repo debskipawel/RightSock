@@ -21,7 +21,7 @@ SocketTCP::SocketTCP(int socket, const Address& address, Port port)
 {
 }
 
-auto SocketTCP::Receive() const -> SocketPayload
+auto SocketTCP::Receive() const -> ReceiveResult
 {
     std::array<char, 512> recvBuffer;
 
@@ -38,14 +38,14 @@ auto SocketTCP::Receive() const -> SocketPayload
 
     std::string message(recvBuffer.begin(), recvBuffer.begin() + bytesReceived);
 
-    return SocketPayload(message, m_Address, m_Port);
+    return {ReceiveStatusCode::RECEIVED, SocketPayload(message, m_Address, m_Port)};
 }
 
 auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatusCode
 {
     if (payload.m_Address != m_Address || payload.m_Port != m_Port)
     {
-        return;
+        return SendStatusCode::VALIDATION_ERROR;
     }
 
     const auto& message = payload.m_Message;
