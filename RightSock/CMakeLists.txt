@@ -1,9 +1,11 @@
-project(right-sock)
+project(RightSock)
 
-add_library(right-sock STATIC)
+set(TARGET_NAME RightSock)
+
+add_library(${TARGET_NAME} STATIC)
 
 target_include_directories(
-  right-sock PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
+  ${TARGET_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include)
 
 set(RIGHT_SOCK_INCLUDE
     "include/RightSock.hpp"
@@ -34,16 +36,19 @@ set(RIGHT_SOCK_OTHER_COMPILE
     "src/TCP/Other/ClientSocketTCP.cpp" "src/TCP/Other/ServerSocketTCP.cpp"
     "src/TCP/Other/ListeningSocketTCP.cpp" "src/UDP/Other/SocketUDP.cpp")
 
-target_sources(right-sock PRIVATE ${RIGHT_SOCK_INCLUDE} ${RIGHT_SOCK_COMPILE})
+target_sources(${TARGET_NAME} PRIVATE ${RIGHT_SOCK_INCLUDE}
+                                      ${RIGHT_SOCK_COMPILE})
 
 if(WIN32)
 
-  target_sources(right-sock PRIVATE ${RIGHT_SOCK_WINDOWS_INCLUDE}
-                                    ${RIGHT_SOCK_WINDOWS_COMPILE})
+  target_sources(${TARGET_NAME} PRIVATE ${RIGHT_SOCK_WINDOWS_INCLUDE}
+                                        ${RIGHT_SOCK_WINDOWS_COMPILE})
 
 else()
 
-  target_sources(right-sock PRIVATE ${RIGHT_SOCK_OTHER_INCLUDE}
-                                    ${RIGHT_SOCK_OTHER_COMPILE})
+  target_sources(${TARGET_NAME} PRIVATE ${RIGHT_SOCK_OTHER_INCLUDE}
+                                        ${RIGHT_SOCK_OTHER_COMPILE})
 
 endif()
+
+unset(TARGET_NAME)
