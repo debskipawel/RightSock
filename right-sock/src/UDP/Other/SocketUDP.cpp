@@ -45,7 +45,7 @@ auto SocketUDP::Receive() const -> ReceiveResult
     std::array<char, 512> recvBuffer;
 
     sockaddr_in sender = {};
-    int senderSize = sizeof(sender);
+    socklen_t senderSize = sizeof(sender);
 
     int receiveResult = recvfrom(m_Socket, recvBuffer.data(), recvBuffer.size(), 0, (sockaddr*) (&sender), &senderSize);
 
@@ -71,7 +71,7 @@ auto SocketUDP::Send(const SocketPayload& payload) const -> SendStatusCode
 
     socklen_t destSize = sizeof(dest);
 
-    int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), &destSize);
+    int sendResult = sendto(m_Socket, payload.m_Message.data(), payload.m_Message.length(), 0, (sockaddr*) (&dest), destSize);
 
     if (sendResult == 0)
     {
