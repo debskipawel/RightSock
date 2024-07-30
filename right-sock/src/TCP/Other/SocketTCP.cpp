@@ -38,7 +38,7 @@ auto SocketTCP::Receive() const -> ReceiveResult
 
     std::string message(recvBuffer.begin(), recvBuffer.begin() + bytesReceived);
 
-    return SocketPayload(message, m_Address, m_Port);
+    return {ReceiveStatusCode::RECEIVED, SocketPayload(message, m_Address, m_Port)};
 }
 
 auto SocketTCP::Send(const SocketPayload& payload) const -> SendStatusCode
