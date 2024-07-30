@@ -10,7 +10,7 @@ It supports multiple platforms, such as Windows, Linux, or Android.
 
 ## Dependencies
 
-CMake 3.25 is required, however after modifying the first line in the main `CMakeLists.txt` file, it will probably work fine on older versions either.
+CMake 3.20 is required, however after modifying the first line in the main `CMakeLists.txt` file, it will probably work fine on older versions either.
 
 The library doesn't use any external dependencies outside of C++20.
 
